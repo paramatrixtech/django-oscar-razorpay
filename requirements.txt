@@ -1,4 +1,4 @@
-django-compressor==1.6
+django-compressor
 pycountry==17.5.14
 
 # Testing
