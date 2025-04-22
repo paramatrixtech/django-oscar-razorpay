@@ -17,12 +17,11 @@ setup(
     packages=find_packages(exclude=['sandbox*', 'tests*']),
     include_package_data=True,
     install_requires=[
-        'requests>=1.0',
-        'django-localflavor',
-        'razorpay==1.0.2',
+        'requests==2.32.3',
+        'razorpay==1.4.2',
     ],
     extras_require={
-        'oscar': ["django-oscar>=1.4"]
+        'oscar': ["django-oscar==3.2.5"]
     },
     # See http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
