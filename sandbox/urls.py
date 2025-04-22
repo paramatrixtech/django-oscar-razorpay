@@ -6,7 +6,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 
 from apps.app import application
-from rzpay.dashboard.app import application as razorpay_dashboard
 
 admin.autodiscover()
 
@@ -18,7 +17,7 @@ urlpatterns += i18n_patterns(
     # Razorpay integration...
     url(r'^checkout/razorpay/', include('rzpay.urls')),
     # Dashboard views for Razorpay
-    url(r'^dashboard/razorpay/', include(razorpay_dashboard.urls)),
+    url(r'^dashboard/razorpay/', include('rzpay.dashboard.urls')),
     url(r'', include(application.urls)),
 )
 if settings.DEBUG:
