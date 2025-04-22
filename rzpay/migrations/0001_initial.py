@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_created', models.DateTimeField(auto_now_add=True)),
                 ('email', models.EmailField(blank=True, max_length=254, null=True)),
-                ('txnid', models.CharField(db_index=True, default=django_oscar_razorpay.models.generate_id, max_length=32)),
+                ('txnid', models.CharField(db_index=True, default=rzpay.models.generate_id, max_length=32)),
                 ('basket_id', models.CharField(blank=True, db_index=True, max_length=12, null=True)),
                 ('amount', models.DecimalField(blank=True, decimal_places=2, max_digits=12, null=True)),
                 ('currency', models.CharField(blank=True, max_length=8, null=True)),
