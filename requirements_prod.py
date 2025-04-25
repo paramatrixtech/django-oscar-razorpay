@@ -16,9 +16,7 @@ django-treebeard==4.7.1
 django-widget-tweaks==1.5.0
 factory-boy==3.2.1
 Faker==37.1.0
-flake8==7.1.2
 idna==3.10
-iniconfig==2.1.0
 mccabe==0.7.0
 packaging==24.2
 phonenumbers==9.0.1
@@ -27,12 +25,7 @@ pluggy==1.5.0
 purl==1.6
 pycodestyle==2.12.1
 pycountry==24.6.1
-pyflakes==3.2.0
-pytest==8.3.5
-pytest-django==4.10.0
-razorpay==1.4.2
 rcssmin==1.1.2
-requests==2.32.3
 rjsmin==1.2.2
 setuptools==78.1.0
 six==1.17.0

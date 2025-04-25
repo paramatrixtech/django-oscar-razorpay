@@ -48,6 +48,44 @@ class PaymentView(CheckoutSessionMixin, View):
     def get(self, request, *args, **kwargs):
         try:
             basket = self.build_submission()['basket']
+            checkout_session = CheckoutSessionData(self.request)
+            if basket.is_shipping_required():
+                if not checkout_session.is_shipping_address_set():
+                    logger.warning(
+                        f"Shipping address not set. Redirecting to failure or \
+                            shipping address URL. Basket ID: {basket.id}"
+                    )
+                    messages.warning(
+                        self.request,
+                        "Please provide a shipping address before proceeding \
+                            to payment."
+                    )
+                    return HttpResponseRedirect(
+                        getattr(
+                            settings, "RAZORPAY_FAILURE_URL",
+                            reverse('checkout:shipping-address')
+                        )
+                    )
+            else:
+                method_code = request.session.get(
+                        'checkout_data', {}
+                    ).get('shipping', {}).get('method_code')
+                if method_code != "no-shipping-required":
+                    logger.warning(
+                        f"Shipping method not set. Redirecting to failure or \
+                            shipping method URL. Basket ID: {basket.id}"
+                    )
+                    messages.warning(
+                        self.request,
+                        "Please provide a shipping method before proceeding \
+                            to payment."
+                    )
+                    return HttpResponseRedirect(
+                        getattr(
+                            settings, "RAZORPAY_FAILURE_URL",
+                            reverse('checkout:shipping-method')
+                        )
+                    )
             if basket.is_empty:
                 raise EmptyBasketException()
         except InvalidBasket as e:
@@ -281,8 +319,6 @@ class SuccessResponseView(PaymentDetailsView):
         return basket
 
     def build_submission(self, **kwargs):
-        CheckoutSessionData(self.request)._set(
-            "shipping", "method_code", "no-shipping-required")
         submission = super().build_submission(**kwargs)
         # Pass the user email so it can be stored with the order
         submission['order_kwargs']['guest_email'] = self.txn.email

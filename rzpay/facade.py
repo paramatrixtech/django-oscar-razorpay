@@ -30,21 +30,29 @@ def start_razorpay_txn(basket, amount, user=None, email=None):
                                           'OSCAR_DEFAULT_CURRENCY',
                                           'INR')
 
-    # Create a new transaction record
-    transaction = Transaction(
-        user=user,
-        amount=amount,
-        currency=currency,
-        basket_id=basket.id,
-        txnid=uuid4().hex[:28],  # Generate a unique transaction ID
-        email=email
-    )
-    transaction.save()
+    try:
+        # Create a new transaction record
+        transaction = Transaction(
+            user=user,
+            amount=amount,
+            currency=currency,
+            basket_id=basket.id,
+            txnid=uuid4().hex[:28],  # Generate a unique transaction ID
+            email=email
+        )
+        transaction.save()
 
-    logger.info(f"Started Razorpay transaction {transaction.txnid} for basket \
-        {basket.id} with amount {amount} {currency}")
+        logger.info(f"Started Razorpay transaction {transaction.txnid} for basket \
+            {basket.id} with amount {amount} {currency}")
 
-    return transaction
+        return transaction
+
+    except Exception as e:
+        # Log the error
+        logger.error(f"Error while starting Razorpay transaction: {str(e)}")
+
+        # Raise RazorpayError with the exception message
+        raise RazorpayError(f"Failed to create Razorpay transaction: {str(e)}") from e # noqa
 
 
 def update_transaction_details(rz_payment_id, txn_id):

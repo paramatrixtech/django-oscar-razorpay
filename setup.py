@@ -17,8 +17,17 @@ setup(
     packages=find_packages(exclude=['sandbox*', 'tests*']),
     include_package_data=True,
     install_requires=[
-        'requests==2.32.3',
+        'Django==4.2.20',
+        'django-oscar==3.2.5',
         'razorpay==1.4.2',
+        'django-tables2==2.3.4',
+        'django-treebeard==4.7.1',
+        'pillow==11.1.0',
+        'requests==2.32.3',
+        'sqlparse==0.5.3',
+        'tzdata==2025.2',
+        'urllib3==2.3.0',
+
     ],
     extras_require={
         'oscar': ["django-oscar==3.2.5"]
