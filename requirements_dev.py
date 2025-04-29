@@ -2,11 +2,7 @@ asgiref
 babel
 certifi
 charset-normalizer
-colorama
 Django
-django-appconf
-django-compressor
-django-debug-toolbar
 django-extra-views
 django-haystack
 django-oscar
@@ -14,24 +10,21 @@ django-phonenumber-field
 django-tables2
 django-treebeard
 django-widget-tweaks
-factory-boy
+factory_boy
 Faker
 idna
-mccabe
 packaging
 phonenumbers
 pillow
-pluggy
 purl
-pycodestyle
-pycountry
-rcssmin
-rjsmin
-setuptools
+razorpay
+requests
 six
 sqlparse
 tzdata
 urllib3
+setuptools
+
 
 # Below packages are for testing purposes only
 flake8
