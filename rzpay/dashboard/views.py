@@ -1,5 +1,5 @@
 from django.views import generic
-from .. import models
+from rzpay import models
 
 
 class TransactionListView(generic.ListView):

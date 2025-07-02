@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from . import views
+from rzpay import views
 
 urlpatterns = [
     path('transaction/', views.TransactionListView.as_view(),

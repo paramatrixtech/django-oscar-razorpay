@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RazorpayTransaction
+from rzpay.models import RazorpayTransaction
 
 
 class RazorpayTransactionAdmin(admin.ModelAdmin):

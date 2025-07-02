@@ -11,8 +11,8 @@ from django.urls import reverse
 from oscar.apps.payment.exceptions import UnableToTakePayment
 from oscar.core.loading import get_class, get_model
 
-from . import facade
-from .exceptions import (
+from rzpay import facade
+from rzpay.exceptions import (
     EmptyBasketException, MissingShippingAddressException,
     MissingShippingMethodException, InvalidBasket, RazorpayError
 )

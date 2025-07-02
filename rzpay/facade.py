@@ -8,8 +8,8 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 import razorpay.errors
 
-from .models import RazorpayTransaction as Transaction
-from .exceptions import RazorpayError
+from rzpay.models import RazorpayTransaction as Transaction
+from rzpay.exceptions import RazorpayError
 from decimal import Decimal, InvalidOperation
 
 import razorpay
