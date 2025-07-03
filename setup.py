@@ -17,12 +17,12 @@ setup(
     packages=find_packages(exclude=['sandbox*', 'tests*']),
     include_package_data=True,
     install_requires=[
-        'requests>=1.0',
-        'django-localflavor',
-        'razorpay==1.0.2',
+        'Django==5.2',
+        'django-oscar==4.0',
+        'razorpay==1.4.2',
     ],
     extras_require={
-        'oscar': ["django-oscar>=1.4"]
+        'oscar': ["django-oscar==4.0"]
     },
     # See http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
@@ -33,8 +33,8 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: Unix',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
         'Topic :: Other/Nonlisted Topic'],
 )
