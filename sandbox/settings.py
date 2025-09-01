@@ -227,9 +227,8 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-RAZORPAY_API_KEY = keys.RAZORPAY_API_KEY
-RAZORPAY_API_SECRET = keys.RAZORPAY_API_SECRET
-RAZORPAY_CURRENCY = "INR"
+RZ_API_KEY = keys.RZ_API_KEY
+RZ_API_SECRET = keys.RZ_API_SECRET
 
 # Put your own sandbox settings into an integration.py modulde (that is ignored
 # by git).

@@ -195,33 +195,37 @@ This guide explains how to install and configure the `django-oscar-razorpay` pac
     Add the following settings to your `settings.py` file, replacing the placeholders with your actual Razorpay credentials and URLs:
 
     ```python
-    RAZORPAY_KEY_ID = 'YOUR_RAZORPAY_KEY_ID'  # From your Razorpay dashboard
-    RAZORPAY_KEY_SECRET = 'YOUR_RAZORPAY_KEY_SECRET'  # From your Razorpay dashboard
+    RZ_KEY_ID = 'YOUR_RZ_KEY_ID'  # From your Razorpay dashboard
+    RZ_KEY_SECRET = 'YOUR_RZ_KEY_SECRET'  # From your Razorpay dashboard
 
     # URLs for success and failure redirects
-    RAZORPAY_SUCCESS_URL = "/checkout/success/"  # Replace with your actual success URL
-    RAZORPAY_FAILURE_URL = "/checkout/failure/"  # Replace with your actual failure URL
+    RZ_SUCCESS_URL = "/checkout/success/"  # Replace with your actual success URL
+    RZ_BASKET_SUMMARY_FAILURE_URL = "/checkout/basket-summary/"  # Redirect on basket summary failure
+    RZ_SHIPPING_METHOD_FAILURE_URL = "/checkout/shipping-method/"  # Redirect on shipping method failure
+    RZ_SHIPPING_ADDRESS_FAILURE_URL = "/checkout/shipping-address/"  # Redirect on shipping address failure
 
     # Checkout page customization
-    RAZORPAY_VENDOR_NAME = "Example Store"  # Replace with your store's name
-    RAZORPAY_DESCRIPTION = "Payment for your Example Order"  # Replace with a suitable description
-    RAZORPAY_THEME_COLOR = "#007BFF"  # Checkout page theme color (blue example)
-    RAZORPAY_VENDOR_LOGO = "https://example.com/logo.png"  # Replace with your logo URL or leave blank
-    RAZORPAY_TIMEOUT = 600  # Checkout timeout in seconds (10 minutes) - integer value
-    IS_RAZORPAY_TIMEOUT = True  # Enable or disable the timeout (True/False)
+    RZ_VENDOR_NAME = "Example Store"  # Replace with your store's name
+    RZ_DESCRIPTION = "Payment for your Example Order"  # Replace with a suitable description
+    RZ_THEME_COLOR = "#007BFF"  # Checkout page theme color (blue example)
+    RZ_VENDOR_LOGO = "https://example.com/logo.png"  # Replace with your logo URL or leave blank
+    RZ_TIMEOUT = 600  # Checkout timeout in seconds (10 minutes) - integer value
+    IS_RZ_TIMEOUT = True  # Enable or disable the timeout (True/False)
 
     ```
 
-    *   **`RAZORPAY_KEY_ID`**: Your Razorpay Key ID (obtained from your Razorpay dashboard).
-    *   **`RAZORPAY_KEY_SECRET`**: Your Razorpay Key Secret (obtained from your Razorpay dashboard).
-    *   **`RAZORPAY_SUCCESS_URL`**: The URL Razorpay will redirect to after a *successful* payment.  **Must be a valid URL within your Django project.**
-    *   **`RAZORPAY_FAILURE_URL`**: The URL Razorpay will redirect to after a *failed* payment. **Must be a valid URL within your Django project.**
-    *   **`RAZORPAY_VENDOR_NAME`**: The name of your store/business displayed on the checkout page.
-    *   **`RAZORPAY_DESCRIPTION`**: A short description of the transaction displayed on the checkout page.
-    *   **`RAZORPAY_THEME_COLOR`**:  (Optional) The primary color of the Razorpay checkout interface (hex color code).
-    *   **`RAZORPAY_VENDOR_LOGO`**:  (Optional)  The URL of your store's logo image (must be publicly accessible).
-    *   **`RAZORPAY_TIMEOUT`**: (Optional) The timeout (in seconds) for the Razorpay checkout.  *Must be an integer.*
-    *   **`IS_RAZORPAY_TIMEOUT`**: (Optional)  A boolean value (`True` or `False`) to enable or disable the timeout.
+    *   **`RZ_KEY_ID`**: Your Razorpay Key ID (obtained from your Razorpay dashboard).
+    *   **`RZ_KEY_SECRET`**: Your Razorpay Key Secret (obtained from your Razorpay dashboard).
+    *   **`RZ_SUCCESS_URL`**: The URL Razorpay will redirect to after a *successful* payment.  **Must be a valid URL within your Django project.**
+    *   **`RZ_BASKET_SUMMARY_FAILURE_URL`**: URL to redirect if payment fails during the basket summary stage.
+    *   **`RZ_SHIPPING_METHOD_FAILURE_URL`**: URL to redirect if payment fails during shipping method selection.
+    *   **`RZ_SHIPPING_ADDRESS_FAILURE_URL`**: URL to redirect if payment fails during address entry.
+    *   **`RZ_VENDOR_NAME`**: The name of your store/business displayed on the checkout page.
+    *   **`RZ_DESCRIPTION`**: A short description of the transaction displayed on the checkout page.
+    *   **`RZ_THEME_COLOR`**:  (Optional) The primary color of the Razorpay checkout interface (hex color code).
+    *   **`RZ_VENDOR_LOGO`**:  (Optional)  The URL of your store's logo image (must be publicly accessible).
+    *   **`RZ_TIMEOUT`**: (Optional) The timeout (in seconds) for the Razorpay checkout.  *Must be an integer.*
+    *   **`RZ_IS_TIMEOUT`**: (Optional)  A boolean value (`True` or `False`) to enable or disable the timeout.
    
 
 4.  **Include Oscar's URLs (if not already included):**

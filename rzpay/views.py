@@ -6,12 +6,11 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
 
 from oscar.apps.payment.exceptions import UnableToTakePayment
 from oscar.core.loading import get_class, get_model
 
-from rzpay import facade
+from rzpay import facade, default
 from rzpay.exceptions import (
     EmptyBasketException, MissingShippingAddressException,
     MissingShippingMethodException, InvalidBasket, RazorpayError
@@ -61,10 +60,7 @@ class PaymentView(CheckoutSessionMixin, View):
                             to payment."
                     )
                     return HttpResponseRedirect(
-                        getattr(
-                            settings, "RAZORPAY_FAILURE_URL",
-                            reverse('checkout:shipping-address')
-                        )
+                        default.RZ_SHIPPING_ADDRESS_FAILURE_URL
                     )
             else:
                 method_code = request.session.get(
@@ -81,46 +77,31 @@ class PaymentView(CheckoutSessionMixin, View):
                             to payment."
                     )
                     return HttpResponseRedirect(
-                        getattr(
-                            settings, "RAZORPAY_FAILURE_URL",
-                            reverse('checkout:shipping-method')
-                        )
+                        default.RZ_SHIPPING_METHOD_FAILURE_URL
                     )
             if basket.is_empty:
                 raise EmptyBasketException()
         except InvalidBasket as e:
             messages.warning(self.request, str(e))
             return HttpResponseRedirect(
-                getattr(
-                    settings, "RAZORPAY_FAILURE_URL",
-                    reverse('basket:summary')
-                )
+                default.RZ_BASKET_SUMMARY_FAILURE_URL
             )
         except EmptyBasketException:
             messages.error(self.request, _("Your basket is empty"))
             return HttpResponseRedirect(
-                getattr(
-                    settings, "RAZORPAY_FAILURE_URL",
-                    reverse('basket:summary')
-                )
+                default.RZ_BASKET_SUMMARY_FAILURE_URL
             )
         except MissingShippingAddressException:
             messages.error(
                 self.request, _("A shipping address must be specified"))
             return HttpResponseRedirect(
-                getattr(
-                    settings, "RAZORPAY_FAILURE_URL",
-                    reverse('checkout:shipping-address')
-                )
+                default.RZ_SHIPPING_ADDRESS_FAILURE_URL
             )
         except MissingShippingMethodException:
             messages.error(
                 self.request, _("A shipping method must be specified"))
             return HttpResponseRedirect(
-                getattr(
-                    settings, "RAZORPAY_FAILURE_URL",
-                    reverse('checkout:shipping-method')
-                )
+                default.RZ_SHIPPING_METHOD_FAILURE_URL
             )
         else:
             # Freeze the basket so it can't be edited while the customer is
@@ -148,29 +129,18 @@ class PaymentView(CheckoutSessionMixin, View):
         context = {
             "basket": basket,
             "amount": int(amount * 100),  # amount in paisa as int
-            "rz_key": settings.RAZORPAY_API_KEY,
-            "is_timeout": getattr(
-                settings, "IS_RAZORPAY_TIMEOUT", "True"
-            ),
+            "rz_key": settings.RZ_API_KEY,
+            "is_timeout": default.RZ_IS_TIMEOUT,
             "email": email,
             "txn_id": txn.txnid,
             "rz_order": rz_order,
-            "name": getattr(settings, "RAZORPAY_VENDOR_NAME", "My Store"),
-            "description": getattr(
-                settings, "RAZORPAY_DESCRIPTION", "Amazing Product"
-            ),
-            "theme_color": getattr(
-                settings, "RAZORPAY_THEME_COLOR", "#F37254"
-            ),
-            "logo_url": getattr(
-                settings, "RAZORPAY_VENDOR_LOGO",
-                "https://via.placeholder.com/150x150"
-            ),
+            "name": settings.RZ_VENDOR_NAME,
+            "description": settings.RZ_DESCRIPTION,
+            "theme_color": default.RZ_THEME_COLOR,
+            "logo_url": default.RZ_VENDOR_LOGO,
         }
-        if getattr(settings, "IS_RAZORPAY_TIMEOUT", "True") == 'True':
-            context['timeout'] = getattr(
-                settings, "RAZORPAY_TIMEOUT", "900"
-            )
+        if default.RZ_IS_TIMEOUT == 'True':
+            context['timeout'] = default.RZ_TIMEOUT
         return context
 
 
@@ -187,10 +157,7 @@ class CancelResponseView(RedirectView):
 
     def get_redirect_url(self, **kwargs):
         messages.error(self.request, _("Razorpay transaction cancelled"))
-        return getattr(
-            settings, "RAZORPAY_FAILURE_URL",
-            reverse('basket:summary')
-        )
+        return default.RZ_BASKET_SUMMARY_FAILURE_URL
 
 
 class SuccessResponseView(PaymentDetailsView):
@@ -231,19 +198,13 @@ class SuccessResponseView(PaymentDetailsView):
             messages.error(self.request, _(e))
             logger.error(e)
             return HttpResponseRedirect(
-                getattr(
-                    settings, "RAZORPAY_FAILURE_URL",
-                    reverse('basket:summary')
-                )
+                default.RZ_BASKET_SUMMARY_FAILURE_URL
             )
         except ValueError as e:
             messages.error(self.request, _(e))
             logger.error(e)
             return HttpResponseRedirect(
-                getattr(
-                    settings, "RAZORPAY_FAILURE_URL",
-                    reverse('basket:summary')
-                )
+                default.RZ_BASKET_SUMMARY_FAILURE_URL
             )
         except KeyError:
             # Manipulation - redirect to basket page with warning message
@@ -255,10 +216,7 @@ class SuccessResponseView(PaymentDetailsView):
                 self.request,
                 _("Unable to determine Razorpay transaction details"))
             return HttpResponseRedirect(
-                getattr(
-                    settings, "RAZORPAY_FAILURE_URL",
-                    reverse('basket:summary')
-                )
+                default.RZ_BASKET_SUMMARY_FAILURE_URL
             )
 
         try:
@@ -270,10 +228,7 @@ class SuccessResponseView(PaymentDetailsView):
                 _("A problem occurred communicating with Razorpay - "
                   "please try again later"))
             return HttpResponseRedirect(
-                getattr(
-                    settings, "RAZORPAY_FAILURE_URL",
-                    reverse('basket:summary')
-                )
+                default.RZ_BASKET_SUMMARY_FAILURE_URL
             )
 
         # Reload frozen basket which is specified in the URL
@@ -287,10 +242,7 @@ class SuccessResponseView(PaymentDetailsView):
                 _("No basket was found that corresponds to your "
                   "Razorpay transaction"))
             return HttpResponseRedirect(
-                getattr(
-                    settings, "RAZORPAY_FAILURE_URL",
-                    reverse('basket:summary')
-                )
+                default.RZ_BASKET_SUMMARY_FAILURE_URL
             )
 
         logger.info(
@@ -359,17 +311,8 @@ class SuccessResponseView(PaymentDetailsView):
             ).first()
             if order:
                 # Combine base URL with query string
-                return getattr(
-                        settings, "RAZORPAY_SUCCESS_URL",
-                        reverse('checkout:thank-you')
-                    ) + f"?order_number={order.number}"
+                return default.RZ_SUCCESS_URL[0] + f"?order_number={order.number}"
             else:
-                return getattr(
-                        settings, "RAZORPAY_FAILURE_URL",
-                        reverse('basket:summary')
-                    )
+                return default.RZ_BASKET_SUMMARY_FAILURE_URL
         # If order is not found or session key is missing, return failure URL
-        return getattr(
-                    settings, "RAZORPAY_FAILURE_URL",
-                    reverse('basket:summary')
-                )
+        return default.RZ_BASKET_SUMMARY_FAILURE_URL
