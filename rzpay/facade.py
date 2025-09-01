@@ -16,7 +16,7 @@ import razorpay
 
 # Initialize the Razorpay client with API credentials
 rz_client = razorpay.Client(
-    auth=(settings.RAZORPAY_API_KEY, settings.RAZORPAY_API_SECRET)
+    auth=(settings.RZ_API_KEY, settings.RZ_API_SECRET)
 )
 
 logger = logging.getLogger('razorpay')
